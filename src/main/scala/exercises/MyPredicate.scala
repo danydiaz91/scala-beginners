@@ -1,5 +1,5 @@
 package exercises
 
-trait MyPredicate {
-
+trait MyPredicate[-A] {
+  def test(elem: A): Boolean
 }

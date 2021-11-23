@@ -1,5 +1,5 @@
 package exercises
 
-trait MyTransformer {
-
+trait MyTransformer[-A, B] {
+  def transform(elem: A): B
 }
