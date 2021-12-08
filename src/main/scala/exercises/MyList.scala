@@ -29,7 +29,7 @@ case object Empty extends MyList[Nothing] {
 
   override def isEmpty: Boolean = true
 
-  override def add[B >: Nothing](elem: B): MyList[B] = new Cons(elem, Empty)
+  override def add[B >: Nothing](elem: B): MyList[B] = Cons(elem, Empty)
 
   override def printElements: String = ""
 
@@ -49,7 +49,7 @@ case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
 
   override def isEmpty: Boolean = false
 
-  override def add[B >: A](elem: B): MyList[B] = new Cons(elem, this)
+  override def add[B >: A](elem: B): MyList[B] = Cons(elem, this)
 
   override def printElements: String = {
     if (t.isEmpty) "" + h
@@ -64,7 +64,7 @@ case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
       = new Cons(2, new Cons(4, new Cons(6, Empty)))
    */
   override def map[B](transformer: A => B): MyList[B] = {
-    new Cons(transformer(h), t.map(transformer))
+    Cons(transformer(h), t.map(transformer))
   }
 
   /*
@@ -87,7 +87,7 @@ case class Cons[+A](h: A, t: MyList[A]) extends MyList[A] {
       = new Cons(2, Empty)
    */
   override def filter(predicate: A => Boolean): MyList[A] = {
-    if (predicate(h)) new Cons(h, t.filter(predicate))
+    if (predicate(h)) Cons(h, t.filter(predicate))
     else t.filter(predicate)
   }
 
@@ -107,11 +107,10 @@ object ListTest extends App {
   println(list.add(4).head)
   println(list.toString)
 
-  println(list.map((elem: Int) => elem * 2).toString)
+  println(list.map(_ * 2).toString)
 
-  println(list.filter((elem: Int) => elem % 2 == 0).toString)
+  println(list.filter(_ % 2 == 0).toString)
 
   println((list ++ anotherList).toString)
-  println((list.flatMap((elem: Int) => new Cons(elem, new Cons[Int](elem + 1, Empty))).toString))
+  println(list.flatMap((elem: Int) => Cons(elem, new Cons[Int](elem + 1, Empty))).toString)
 }
-
